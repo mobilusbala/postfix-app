@@ -1,1 +1,3 @@
-# postfix-app
+# postfix-app#
+
+npm run start:dev input.csv

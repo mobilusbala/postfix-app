@@ -1,5 +1,10 @@
 import fs from "fs";
-import { getRowAndColumn, processPostfix, readCSV } from "../src/util.js";
+import {
+  getRowAndColumn,
+  processAndPrint,
+  processPostfix,
+  readCSV,
+} from "../src/util.js";
 
 describe("readCSV function", () => {
   const testCSVPath = "test.csv";
@@ -60,5 +65,25 @@ describe("processPostfix function", () => {
     expect(processPostfix("3 4")).toBeNull(); // Incomplete expression
     expect(processPostfix("A B +")).toBeNull(); // Invalid token
     expect(processPostfix("10 0 /")).toBe(Infinity); // Division by zero
+  });
+});
+
+describe("processAndPrint function", () => {
+  const data = [
+    ["10", "1 3 +", "2 3 -"],
+    ["b1 b2 *", "a1", "b1 a2 / c1 +"],
+    ["+", "1 2 3", "c3"],
+  ];
+
+  test("should evaluate valid postfix expressions correctly", () => {
+    expect(processAndPrint(0, 0, data)).toBe("10");
+    expect(processAndPrint(0, 1, data)).toBe("4");
+    expect(processAndPrint(0, 2, data)).toBe("-1");
+    expect(processAndPrint(1, 0, data)).toBe("40");
+    expect(processAndPrint(1, 1, data)).toBe("10");
+    expect(processAndPrint(1, 2, data)).toBe("-0.9");
+    expect(processAndPrint(2, 0, data)).toBe("#ERR");
+    expect(processAndPrint(2, 1, data)).toBe("#ERR");
+    expect(processAndPrint(2, 2, data)).toBe("#ERR");
   });
 });
