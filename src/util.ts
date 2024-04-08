@@ -78,22 +78,6 @@ const isVaildCell = (token: string): boolean => {
   return regex.test(token);
 };
 
-const getCellValue = (token: string, data: string[][]): string => {
-  try {
-    const cell = getRowAndColumn(token);
-    const res = data[cell.row][cell.column];
-    //console.log(cell.row, cell.column);
-
-    if (token === res) {
-      return "#ERR";
-    } else {
-      return res;
-    }
-  } catch (error) {
-    return "#ERR";
-  }
-};
-
 const isValidPostfixExpression = (expression: string): boolean => {
   const stack: number[] = [];
 
@@ -133,17 +117,27 @@ const isValidPostfixPattern = (expression: string): boolean => {
   return stack.length === 1;
 };
 
+const getCellValue = (token: string, data: string[][]): string => {
+  try {
+    const cell = getRowAndColumn(token);
+    const res = data[cell.row][cell.column];
+    if (token === res) {
+      return "#ERR";
+    } else {
+      return res;
+    }
+  } catch (error) {
+    return "#ERR";
+  }
+};
+
 export const getValue = (
   row: number,
   col: number,
   data: string[][]
 ): string => {
   const cellData = data[row][col];
-
-  //console.log(`---------${cellData}-----`);
-
   if (!isNaN(Number(cellData))) {
-    // console.log("---------Number-----", Number(cellData));
     return cellData;
   } else if (isVaildCell(cellData)) {
     const res = getCellValue(cellData, data);
@@ -155,9 +149,6 @@ export const getValue = (
   } else if (isValidPostfixExpression(cellData)) {
     const res = processPostfix(cellData).toString();
     data[row][col] = res;
-
-    // console.log("---------isValidPostfixExpression-----", res, data[row][col]);
-
     return res;
   } else if (isValidPostfixPattern(cellData)) {
     const res = cellData.split(" ").map((ele) => {
@@ -168,8 +159,6 @@ export const getValue = (
     });
 
     data[row][col] = res.join(" ");
-
-    //console.log("---------isValidPostfixPattern-----", data[row][col]);
   } else {
     return "#ERR";
   }
