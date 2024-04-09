@@ -1,7 +1,5 @@
 # postfix-app
 
-Example Node.js app with TypeScript setup
-
 ## Prerequisite
 
 - Node 18
