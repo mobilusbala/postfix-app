@@ -54,7 +54,6 @@ describe("processPostfix function", () => {
     expect(processPostfix("3 4 +")).toBe(7);
     expect(processPostfix("5 2 *")).toBe(10);
     expect(processPostfix("10 3 /")).toBeCloseTo(3.333, 3); // Approximate equality due to floating point precision
-    expect(processPostfix("2 3 ^")).toBe(8);
     expect(processPostfix("4 2 + 5 *")).toBe(30);
     expect(processPostfix("7 3 2 * +")).toBe(13);
     expect(processPostfix("5 4 3 2 * + -")).toBe(-5);

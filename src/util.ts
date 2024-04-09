@@ -12,7 +12,7 @@ export const readCSV = async (filePath: string): Promise<string[][]> => {
         row
           .trim()
           .split(",")
-          .map((ele) => ele.trim())
+          .map((ele) => ele.trim().replace(/\s+/g, " "))
       );
 
       resolve(rows);
@@ -41,7 +41,6 @@ export const processPostfix = (postfixExpression: string): number | null => {
     "-": (a, b) => a - b,
     "*": (a, b) => a * b,
     "/": (a, b) => a / b,
-    "^": (a, b) => Math.pow(a, b),
   };
 
   const tokens = postfixExpression.split(" ");
@@ -78,6 +77,7 @@ const isVaildCell = (token: string): boolean => {
   return regex.test(token);
 };
 
+// Function to check if a string is a valid postfix expression
 const isValidPostfixExpression = (expression: string): boolean => {
   const stack: number[] = [];
 
@@ -97,7 +97,7 @@ const isValidPostfixExpression = (expression: string): boolean => {
   return stack.length === 1;
 };
 
-// Function to check if a string is a valid postfix expression
+// Function to check if a string is a valid postfix Pattern
 const isValidPostfixPattern = (expression: string): boolean => {
   const stack: string[] = [];
 
