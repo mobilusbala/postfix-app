@@ -69,13 +69,12 @@ describe("processPostfix function", () => {
 });
 
 describe("processAndPrint function", () => {
-  const data = [
-    ["10", "1 3 +", "2 3 -"],
-    ["b1 b2 *", "a1", "b1 a2 / c1 +"],
-    ["+", "1 2 3", "c3"],
-  ];
-
   test("should evaluate valid postfix expressions correctly", () => {
+    const data = [
+      ["10", "1 3 +", "2 3 -"],
+      ["b1 b2 *", "a1", "b1 a2 / c1 +"],
+      ["+", "1 2 3", "c3"],
+    ];
     expect(processAndPrint(0, 0, data)).toBe("10");
     expect(processAndPrint(0, 1, data)).toBe("4");
     expect(processAndPrint(0, 2, data)).toBe("-1");
@@ -85,5 +84,41 @@ describe("processAndPrint function", () => {
     expect(processAndPrint(2, 0, data)).toBe("#ERR");
     expect(processAndPrint(2, 1, data)).toBe("#ERR");
     expect(processAndPrint(2, 2, data)).toBe("#ERR");
+  });
+
+  test("should evaluate ERR if reference cell is elavualted as ERR", () => {
+    const data1 = [
+      ["10", "1 3 4", "2 3 -"],
+      ["b1 b2 *", "a1", "b1 a2 / c1 +"],
+      ["+", "1 2 3", "c3"],
+    ];
+    expect(processAndPrint(1, 0, data1)).toBe("#ERR");
+  });
+
+  test("should evaluate ERR if reference cell is not found", () => {
+    const data2 = [
+      ["10", "1 3 4", "2 3 -"],
+      ["b1 d2 *", "a1", "b1 a2 / c1 +"],
+      ["+", "1 2 3", "c3"],
+    ];
+    expect(processAndPrint(1, 0, data2)).toBe("#ERR");
+  });
+
+  test("should evaluate ERR if cell reference itself", () => {
+    const data3 = [
+      ["10", "1 3 4", "2 3 -"],
+      ["b0", "a1", "b1 a2 / c1 +"],
+      ["+", "1 2 3", "c3"],
+    ];
+    expect(processAndPrint(1, 0, data3)).toBe("#ERR");
+  });
+
+  test("should evaluate ERR if cell reference is loop", () => {
+    const data4 = [
+      ["10", "1 3 4", "2 3 -"],
+      ["b1", "c1", "a1"],
+      ["+", "1 2 3", "c3"],
+    ];
+    expect(processAndPrint(1, 0, data4)).toBe("#ERR");
   });
 });
